@@ -15,14 +15,17 @@ const item = {
 function succeed(item) {
   if (item.enhancement) {
     if (isNumber(item.enhancement)) {
-      if (item.enhancement === 20) {
-        null
+      if (item.enhancement >= 0 && item.enhancement <= 20) {
+        if (item.enhancement === 20) {
+          null
+        }
+        else { item.enhancement += 1 }
       }
-      else { item.enhancement += 1 }
+      else { throw new Error("enhancement level is incorrect") }
     }
-    else { throw new Error("item.durability is NaN") }
+    else { throw new Error("item.enhancement is NaN") }
   }
-  else { throw new Error("No item durability") }
+  else { throw new Error("No item enhancement") }
 
   return item
 }
@@ -40,22 +43,78 @@ function succeed(item) {
     error enhancement is not a number )
   enhancement is missing ) */
 function fail(item) {
-  item.enhancement ? isNumber(item.enhancement) ? item.enhancement >= 0 && item.enhancement < 20 ?
-    item.enhancement < 15 ? item.durability -= 5 && (item.durability < 1 ? item = "destroyed" : null) : item.durability -= 10 && (item.durability < 1 ? item = null : null)
-    : new Error("enhancement level is incorrect") : new Error("item.durability is NaN") : new Error("No item durability")
+  if (item.enhancement) {
+    if (isNumber(item.enhancement)) {
+      if (item.enhancement >= 0 && item.enhancement <= 20) {
+        if (item.enhancement < 15) {
+          item.durability -= 5
+          if (item.durability < 1) {
+            item = "destroyed"
+          }
+          else { null }
+        }
+        else {
+          if (item.enhancement === 20) {
+            null
+          }
+          else {
+            item.durability -= 10
+            if (item.durability < 1) {
+              item = null
+            }
+            else {
+              if (item.enhancement > 16) {
+                item.enhancement -= 1
+              } else {
+                null
+              }
+            }
+          }
+        }
+      }
+      else { throw new Error("durability level is incorrect") }
+    }
+    else { throw new Error("item.durability is NaN") }
+  }
+  else { throw new Error("No item durability") }
   return item
 }
 
 function repair(item) {
-  item.durability ? isNumber(item.durability) ? item.durability = 100 : new Error("item.durability is NaN") : new Error("No item durability")
+  if (item.durability) {
+    if (isNumber(item.durability)) {
+      if (item.durability >= 0 && item.durability < 100) {
+        item.durability = 100
+      }
+      else {
+        if (item.durability === 100) {
+          throw new Error("durability level is already 100")
+        }
+        else {
+          throw new Error("durability level is incorrect")
+        }
+      }
+    }
+    else { throw new Error("item.durability is NaN") }
+  }
+  else { throw new Error("No item durability") }
   return item
 }
 
 function get(item) {
-  item.enhancement ? isNumber(item.enhancement) ? item.enhancement >= 0 && item.enhancement < 20 ?
-    item.enhancement < 1 ? null : item.name = `[+${item.enhancement}] ${item.name}`
-    : new Error("enhancement level is incorrect") : new Error("item.durability is NaN") : new Error("No item durability")
-
+  if (item.enhancement) {
+    if (isNumber(item.enhancement)) {
+      if (item.enhancement >= 0 && item.enhancement < 20) {
+        if (item.enhancement < 1) {
+          null
+        }
+        else { item.name = `[+${item.enhancement}] ${item.name}` }
+      }
+      else { throw new Error("enhancement level is incorrect") }
+    }
+    else { throw new Error("item.durability is NaN") }
+  }
+  else { new Error("No item durability") }
   return item
 }
 

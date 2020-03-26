@@ -18,15 +18,30 @@ describe("enhancer.js", function () {
 
     it("enhancement value should be increased by 1", function () {
       expect(succeed(createItem(50, 1)).enhancement).toBe(2)
+      // expect(succeed(createItem(50, 0)).enhancement).toBe(1)
     })
 
     it("enhancement value should be a number", function () {
-      expect(succeed(createItem(50, {}))).toBe(NaN)
+      expect(() => { succeed(createItem(50, {})) }).toThrowError("NaN")
+      expect(() => { succeed(createItem(50, [])) }).toThrowError("NaN")
+      expect(() => { succeed(createItem(50, "Hey")) }).toThrowError("NaN")
+      // expect(() => { succeed(createItem(50, false)) }).toThrowError("NaN")
+      // expect(() => { succeed(createItem(50, NaN)) }).toThrowError("NaN")
     })
 
-    it.todo("enhancement key should be present")
-    it.todo("enhancement value should be between 0 and 20")
-    it.todo("enhancement value should not increase 20")
+    it("enhancement key should be present", function () {
+      expect(() => { succeed({ durability: 50, name: "broken" }) }).toThrow()
+    })
+
+    it("enhancement value should be between 0 and 20", function () {
+      expect(() => { succeed(createItem(50, -123125)) }).toThrowError("level")
+      expect(() => { succeed(createItem(50, -1)) }).toThrowError("level")
+      expect(() => { succeed(createItem(50, 21)) }).toThrowError("level")
+      expect(() => { succeed(createItem(50, 21352356235)) }).toThrowError("level")
+    })
+
+    // it.todo("enhancement value should not increase 20")
+    // expect(() => { succeed(createItem(50, 20)) }).toThrowError("level")
     it.todo("")
     it.todo("")
     it.todo("")
