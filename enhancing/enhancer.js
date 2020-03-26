@@ -8,12 +8,23 @@ module.exports = {
 // redundant example item
 const item = {
   name: "phoenix sword",
-  durability: 100,
-  enhancement: 1
+  durability: 10,
+  enhancement: "hey"
 }
 
 function succeed(item) {
-  item.enhancement ? isNumber(item.enhancement) ? item.enhancement === 20 ? null : item.enhancement += 1 : new Error("item.durability is NaN") : new Error("No item durability")
+  if (item.enhancement) {
+    if (isNumber(item.enhancement)) {
+      if (item.enhancement === 20) {
+        null
+      }
+      else { item.enhancement += 1 }
+    }
+    else { throw new Error("item.durability is NaN") }
+  }
+  else { throw new Error("No item durability") }
+
+  return item
 }
 /* is enhancement there ( 
     is enchantment a number ( 
@@ -30,20 +41,29 @@ function succeed(item) {
   enhancement is missing ) */
 function fail(item) {
   item.enhancement ? isNumber(item.enhancement) ? item.enhancement >= 0 && item.enhancement < 20 ?
-    item.enhancement < 15 ? item.durability -= 5(item.durability < 1 ? item = "destroyed" : null) : item.durability -= 10(item.durability < 1 ? item = null : null)
+    item.enhancement < 15 ? item.durability -= 5 && (item.durability < 1 ? item = "destroyed" : null) : item.durability -= 10 && (item.durability < 1 ? item = null : null)
     : new Error("enhancement level is incorrect") : new Error("item.durability is NaN") : new Error("No item durability")
+  return item
 }
 
 function repair(item) {
   item.durability ? isNumber(item.durability) ? item.durability = 100 : new Error("item.durability is NaN") : new Error("No item durability")
+  return item
 }
 
 function get(item) {
   item.enhancement ? isNumber(item.enhancement) ? item.enhancement >= 0 && item.enhancement < 20 ?
-    item.enhancement < 1 ? : item.name = `[+${item.enhancement}] ${item.name}`
+    item.enhancement < 1 ? null : item.name = `[+${item.enhancement}] ${item.name}`
     : new Error("enhancement level is incorrect") : new Error("item.durability is NaN") : new Error("No item durability")
+
+  return item
 }
 
 function isNumber(value) {
   return !isNaN(parseFloat(value)) && isFinite(value);
 }
+
+// console.log(get(item))
+// console.log(repair(item))
+// console.log(fail(item))
+// console.log(succeed(item))
