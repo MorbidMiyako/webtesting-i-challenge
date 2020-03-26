@@ -13,11 +13,11 @@ const item = {
 }
 
 function succeed(item) {
-  if (item.enhancement) {
+  if (item.enhancement || item.enhancement === 0) {
     if (isNumber(item.enhancement)) {
       if (item.enhancement >= 0 && item.enhancement <= 20) {
         if (item.enhancement === 20) {
-          null
+          throw new Error("enhancementlevel already at 20")
         }
         else { item.enhancement += 1 }
       }
@@ -43,19 +43,19 @@ function succeed(item) {
     error enhancement is not a number )
   enhancement is missing ) */
 function fail(item) {
-  if (item.enhancement) {
+  if (item.enhancement || item.enhancement === 0) {
     if (isNumber(item.enhancement)) {
       if (item.enhancement >= 0 && item.enhancement <= 20) {
         if (item.enhancement < 15) {
           item.durability -= 5
           if (item.durability < 1) {
-            item = "destroyed"
+            throw new Error("item reached durability below 1 and has been destroyed")
           }
           else { null }
         }
         else {
           if (item.enhancement === 20) {
-            null
+            throw new Error("enhancementlevel already at 20")
           }
           else {
             item.durability -= 10
